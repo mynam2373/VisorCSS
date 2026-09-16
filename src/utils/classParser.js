@@ -1,74 +1,70 @@
 // src/utils/classParser.js
 
-// Escalas estándar de Tailwind para ubicar la posición del valor actual
+// 1. Escalas estándar de Tailwind
 const VALUE_SCALES = {
-  // Tamaños de Texto / Font Size
   textSize: ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'],
-  // Breakpoints / Pantallas
   screenSize: ['sm', 'md', 'lg', 'xl', '2xl'],
-  // Border Radius / Redondeo
   roundedSize: ['none', 'sm', 'DEFAULT', 'md', 'lg', 'xl', '2xl', '3xl', 'full'],
-  // Box Shadows / Sombras
   shadowSize: ['sm', 'DEFAULT', 'md', 'lg', 'xl', '2xl', 'inner', 'none'],
-  // Spacing / Espaciado genérico por pasos
   spacingSize: ['0', '0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '5', '6', '7', '8', '9', '10', '11', '12', '14', '16', '20', '24', '28', '32', '36', '40', '44', '48', '52', '56', '60', '64', '72', '80', '96'],
-  // Max Widths
   maxWidthSize: ['0', 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', 'full', 'min', 'max', 'fit', 'prose', 'screen-sm', 'screen-md', 'screen-lg', 'screen-xl', 'screen-2xl'],
 };
 
-// Función auxiliar para generar la cadena de escala con la posición
+// Generador de la cadena de escala con corchetes [valor]
 function getScaleString(scaleArray, currentValue) {
-  const normalizedValue = currentValue === '' ? 'DEFAULT' : currentValue;
-  const index = scaleArray.indexOf(normalizedValue);
+  if (!scaleArray || !Array.isArray(scaleArray)) return '';
+  
+  const target = currentValue === '' ? 'DEFAULT' : currentValue;
+  const index = scaleArray.indexOf(target);
 
   if (index === -1) return '';
 
-  const scaleFormatted = scaleArray
-    .map((item) => (item === normalizedValue ? `[${item}]` : item))
+  const formattedScale = scaleArray
+    .map((item) => (item === target ? `[${item}]` : item))
     .join(' - ');
 
-  return ` (${scaleFormatted})`;
+  return ` (${formattedScale})`;
 }
 
 const VARIANT_MAP = {
-  sm: { type: 'Pantalla Pequeña', description: 'Dispositivos móviles grandes o tablets en vertical (desde 640px)' },
-  md: { type: 'Pantalla Mediana', description: 'Tablets horizontales y laptops pequeñas (desde 768px)' },
-  lg: { type: 'Pantalla Grande', description: 'Monitores de escritorio y laptops estándar (desde 1024px)' },
-  xl: { type: 'Pantalla Extra Grande', description: 'Monitores de alta resolución (desde 1280px)' },
-  '2xl': { type: 'Pantalla Gigante', description: 'Monitores ultra anchos o TVs (desde 1536px)' },
+  sm: { type: 'Pantalla Pequeña', description: 'Dispositivos móviles grandes / tablets (640px+)' },
+  md: { type: 'Pantalla Mediana', description: 'Tablets horizontales / laptops (768px+)' },
+  lg: { type: 'Pantalla Grande', description: 'Monitores estándar (1024px+)' },
+  xl: { type: 'Pantalla Extra Grande', description: 'Monitores de alta resolución (1280px+)' },
+  '2xl': { type: 'Pantalla Gigante', description: 'Monitores ultra anchos (1536px+)' },
   
-  hover: { type: 'Interacción', description: 'Aplica el estilo solo cuando el usuario pasa el puntero por encima' },
-  focus: { type: 'Interacción', description: 'Aplica cuando el elemento es seleccionado (al hacer clic o usar Tab)' },
-  active: { type: 'Interacción', description: 'Aplica mientras el usuario mantiene presionado el botón del mouse' },
-  'focus-within': { type: 'Interacción', description: 'Aplica si el elemento o cualquiera de sus hijos está enfocado' },
-  'group-hover': { type: 'Interacción', description: 'Aplica cuando el elemento padre (marcado como .group) recibe hover' },
-  dark: { type: 'Tema', description: 'Aplica únicamente cuando la interfaz del usuario está en Modo Oscuro' },
+  hover: { type: 'Interacción', description: 'Activo al pasar el puntero por encima' },
+  focus: { type: 'Interacción', description: 'Activo al seleccionar o enfocar' },
+  active: { type: 'Interacción', description: 'Activo al mantener presionado' },
+  'focus-within': { type: 'Interacción', description: 'Activo si un hijo tiene foco' },
+  'group-hover': { type: 'Interacción', description: 'Activo cuando el contenedor .group recibe hover' },
+  dark: { type: 'Tema', description: 'Activo en Modo Oscuro' },
 };
 
 const PREFIX_MAP = {
-  m: { property: 'Margin (Margen Exterior)', axis: 'Todos los lados', scale: VALUE_SCALES.spacingSize },
-  mx: { property: 'Margin Horizontal (Eje X)', axis: 'Izquierda y Derecha', scale: VALUE_SCALES.spacingSize },
-  my: { property: 'Margin Vertical (Eje Y)', axis: 'Arriba y Abajo', scale: VALUE_SCALES.spacingSize },
-  mt: { property: 'Margin Top (Margen Superior)', axis: 'Borde Superior', scale: VALUE_SCALES.spacingSize },
-  mb: { property: 'Margin Bottom (Margen Inferior)', axis: 'Borde Inferior', scale: VALUE_SCALES.spacingSize },
-  ml: { property: 'Margin Left (Margen Izquierdo)', axis: 'Borde Izquierdo', scale: VALUE_SCALES.spacingSize },
-  mr: { property: 'Margin Right (Margen Derecho)', axis: 'Borde Derecho', scale: VALUE_SCALES.spacingSize },
+  m: { property: 'Margin (Margen Exterior)', axis: 'Todos los lados', scaleKey: 'spacingSize' },
+  mx: { property: 'Margin Horizontal (Eje X)', axis: 'Izquierda y Derecha', scaleKey: 'spacingSize' },
+  my: { property: 'Margin Vertical (Eje Y)', axis: 'Arriba y Abajo', scaleKey: 'spacingSize' },
+  mt: { property: 'Margin Top (Margen Superior)', axis: 'Borde Superior', scaleKey: 'spacingSize' },
+  mb: { property: 'Margin Bottom (Margen Inferior)', axis: 'Borde Inferior', scaleKey: 'spacingSize' },
+  ml: { property: 'Margin Left (Margen Izquierdo)', axis: 'Borde Izquierdo', scaleKey: 'spacingSize' },
+  mr: { property: 'Margin Right (Margen Derecho)', axis: 'Borde Derecho', scaleKey: 'spacingSize' },
 
-  p: { property: 'Padding (Relleno Interior)', axis: 'Todos los lados', scale: VALUE_SCALES.spacingSize },
-  px: { property: 'Padding Horizontal (Eje X)', axis: 'Izquierda y Derecha', scale: VALUE_SCALES.spacingSize },
-  py: { property: 'Padding Vertical (Eje Y)', axis: 'Arriba y Abajo', scale: VALUE_SCALES.spacingSize },
-  pt: { property: 'Padding Top (Relleno Superior)', axis: 'Borde Superior', scale: VALUE_SCALES.spacingSize },
-  pb: { property: 'Padding Bottom (Relleno Inferior)', axis: 'Borde Inferior', scale: VALUE_SCALES.spacingSize },
-  pl: { property: 'Padding Left (Relleno Izquierdo)', axis: 'Borde Izquierdo', scale: VALUE_SCALES.spacingSize },
-  pr: { property: 'Padding Right (Relleno Derecho)', axis: 'Borde Derecho', scale: VALUE_SCALES.spacingSize },
+  p: { property: 'Padding (Relleno Interior)', axis: 'Todos los lados', scaleKey: 'spacingSize' },
+  px: { property: 'Padding Horizontal (Eje X)', axis: 'Izquierda y Derecha', scaleKey: 'spacingSize' },
+  py: { property: 'Padding Vertical (Eje Y)', axis: 'Arriba y Abajo', scaleKey: 'spacingSize' },
+  pt: { property: 'Padding Top (Relleno Superior)', axis: 'Borde Superior', scaleKey: 'spacingSize' },
+  pb: { property: 'Padding Bottom (Relleno Inferior)', axis: 'Borde Inferior', scaleKey: 'spacingSize' },
+  pl: { property: 'Padding Left (Relleno Izquierdo)', axis: 'Borde Izquierdo', scaleKey: 'spacingSize' },
+  pr: { property: 'Padding Right (Relleno Derecho)', axis: 'Borde Derecho', scaleKey: 'spacingSize' },
 
-  gap: { property: 'Gap (Separación)', axis: 'Entre filas y columnas', scale: VALUE_SCALES.spacingSize },
-  'gap-x': { property: 'Gap Horizontal', axis: 'Entre columnas', scale: VALUE_SCALES.spacingSize },
-  'gap-y': { property: 'Gap Vertical', axis: 'Entre filas', scale: VALUE_SCALES.spacingSize },
+  gap: { property: 'Gap (Separación)', axis: 'Entre filas y columnas', scaleKey: 'spacingSize' },
+  'gap-x': { property: 'Gap Horizontal', axis: 'Entre columnas', scaleKey: 'spacingSize' },
+  'gap-y': { property: 'Gap Vertical', axis: 'Entre filas', scaleKey: 'spacingSize' },
 
-  w: { property: 'Width (Ancho)', axis: 'Eje Horizontal', scale: VALUE_SCALES.spacingSize },
-  h: { property: 'Height (Alto)', axis: 'Eje Vertical', scale: VALUE_SCALES.spacingSize },
-  'max-w': { property: 'Max Width (Ancho Máximo)', axis: 'Límite Horizontal', scale: VALUE_SCALES.maxWidthSize },
+  w: { property: 'Width (Ancho)', axis: 'Eje Horizontal', scaleKey: 'spacingSize' },
+  h: { property: 'Height (Alto)', axis: 'Eje Vertical', scaleKey: 'spacingSize' },
+  'max-w': { property: 'Max Width (Ancho Máximo)', axis: 'Límite Horizontal', scaleKey: 'maxWidthSize' },
   'min-w': { property: 'Min Width (Ancho Mínimo)', axis: 'Límite Horizontal' },
   'max-h': { property: 'Max Height (Alto Máximo)', axis: 'Límite Vertical' },
   'min-h': { property: 'Min Height (Alto Mínimo)', axis: 'Límite Vertical' },
@@ -89,8 +85,8 @@ const PREFIX_MAP = {
   items: { property: 'Align Items', axis: 'Alineación Secundaria (Vertical)' },
   justify: { property: 'Justify Content', axis: 'Alineación Principal (Horizontal)' },
 
-  rounded: { property: 'Border Radius (Redondeo)', axis: 'Esquinas', scale: VALUE_SCALES.roundedSize },
-  shadow: { property: 'Box Shadow (Sombra)', axis: 'Elevación visual', scale: VALUE_SCALES.shadowSize },
+  rounded: { property: 'Border Radius (Redondeo)', axis: 'Esquinas', scaleKey: 'roundedSize' },
+  shadow: { property: 'Box Shadow (Sombra)', axis: 'Elevación visual', scaleKey: 'shadowSize' },
   opacity: { property: 'Opacity (Opacidad)', axis: 'Nivel de transparencia' },
 };
 
@@ -128,11 +124,11 @@ export function parseTailwindClass(rawClassStr) {
     baseClass = parts.pop();
     variants = parts.map((v) => {
       const info = VARIANT_MAP[v];
-      const scaleInfo = getScaleString(VALUE_SCALES.screenSize, v);
+      const scaleStr = getScaleString(VALUE_SCALES.screenSize, v);
       return {
         prefix: v,
         type: info ? info.type : 'Condición',
-        description: `${info ? info.description : `Condición activa bajo '${v}:'`}${scaleInfo}`,
+        description: `${info ? info.description : `Condición activa bajo '${v}:'`}${scaleStr}`,
       };
     });
   }
@@ -206,7 +202,7 @@ export function parseTailwindClass(rawClassStr) {
     opacityInfo = ` (con ${opacity}% de opacidad)`;
   }
 
-  // Si es un color de 2 partes (ej: bg-slate-950)
+  // Si es un color (ej: bg-slate-950)
   if (restSegments.length >= 2 && ['bg', 'text', 'border', 'ring'].includes(prefix)) {
     const colorName = restSegments[0];
     const colorShade = restSegments.slice(1).join('-');
@@ -222,12 +218,12 @@ export function parseTailwindClass(rawClassStr) {
     };
   }
 
-  // Detectar si la propiedad tiene una escala asignada (ej: text-4xl, max-w-7xl, p-8)
+  // Obtener la escala si corresponde
   let scaleString = '';
   if (prefix === 'text' && VALUE_SCALES.textSize.includes(fullValue)) {
     scaleString = getScaleString(VALUE_SCALES.textSize, fullValue);
-  } else if (prefixInfo.scale) {
-    scaleString = getScaleString(prefixInfo.scale, fullValue);
+  } else if (prefixInfo.scaleKey && VALUE_SCALES[prefixInfo.scaleKey]) {
+    scaleString = getScaleString(VALUE_SCALES[prefixInfo.scaleKey], fullValue);
   }
 
   return {
