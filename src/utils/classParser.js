@@ -1,5 +1,35 @@
 // src/utils/classParser.js
 
+// Escalas estándar de Tailwind para ubicar la posición del valor actual
+const VALUE_SCALES = {
+  // Tamaños de Texto / Font Size
+  textSize: ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'],
+  // Breakpoints / Pantallas
+  screenSize: ['sm', 'md', 'lg', 'xl', '2xl'],
+  // Border Radius / Redondeo
+  roundedSize: ['none', 'sm', 'DEFAULT', 'md', 'lg', 'xl', '2xl', '3xl', 'full'],
+  // Box Shadows / Sombras
+  shadowSize: ['sm', 'DEFAULT', 'md', 'lg', 'xl', '2xl', 'inner', 'none'],
+  // Spacing / Espaciado genérico por pasos
+  spacingSize: ['0', '0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '5', '6', '7', '8', '9', '10', '11', '12', '14', '16', '20', '24', '28', '32', '36', '40', '44', '48', '52', '56', '60', '64', '72', '80', '96'],
+  // Max Widths
+  maxWidthSize: ['0', 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', 'full', 'min', 'max', 'fit', 'prose', 'screen-sm', 'screen-md', 'screen-lg', 'screen-xl', 'screen-2xl'],
+};
+
+// Función auxiliar para generar la cadena de escala con la posición
+function getScaleString(scaleArray, currentValue) {
+  const normalizedValue = currentValue === '' ? 'DEFAULT' : currentValue;
+  const index = scaleArray.indexOf(normalizedValue);
+
+  if (index === -1) return '';
+
+  const scaleFormatted = scaleArray
+    .map((item) => (item === normalizedValue ? `[${item}]` : item))
+    .join(' - ');
+
+  return ` (${scaleFormatted})`;
+}
+
 const VARIANT_MAP = {
   sm: { type: 'Pantalla Pequeña', description: 'Dispositivos móviles grandes o tablets en vertical (desde 640px)' },
   md: { type: 'Pantalla Mediana', description: 'Tablets horizontales y laptops pequeñas (desde 768px)' },
@@ -16,49 +46,42 @@ const VARIANT_MAP = {
 };
 
 const PREFIX_MAP = {
-  // Margen (Espacio exterior)
-  m: { property: 'Margin (Margen Exterior)', axis: 'Todos los lados' },
-  mx: { property: 'Margin Horizontal (Eje X)', axis: 'Izquierda y Derecha' },
-  my: { property: 'Margin Vertical (Eje Y)', axis: 'Arriba y Abajo' },
-  mt: { property: 'Margin Top (Margen Superior)', axis: 'Borde Superior' },
-  mb: { property: 'Margin Bottom (Margen Inferior)', axis: 'Borde Inferior' },
-  ml: { property: 'Margin Left (Margen Izquierdo)', axis: 'Borde Izquierdo' },
-  mr: { property: 'Margin Right (Margen Derecho)', axis: 'Borde Derecho' },
+  m: { property: 'Margin (Margen Exterior)', axis: 'Todos los lados', scale: VALUE_SCALES.spacingSize },
+  mx: { property: 'Margin Horizontal (Eje X)', axis: 'Izquierda y Derecha', scale: VALUE_SCALES.spacingSize },
+  my: { property: 'Margin Vertical (Eje Y)', axis: 'Arriba y Abajo', scale: VALUE_SCALES.spacingSize },
+  mt: { property: 'Margin Top (Margen Superior)', axis: 'Borde Superior', scale: VALUE_SCALES.spacingSize },
+  mb: { property: 'Margin Bottom (Margen Inferior)', axis: 'Borde Inferior', scale: VALUE_SCALES.spacingSize },
+  ml: { property: 'Margin Left (Margen Izquierdo)', axis: 'Borde Izquierdo', scale: VALUE_SCALES.spacingSize },
+  mr: { property: 'Margin Right (Margen Derecho)', axis: 'Borde Derecho', scale: VALUE_SCALES.spacingSize },
 
-  // Padding (Espacio interior)
-  p: { property: 'Padding (Relleno Interior)', axis: 'Todos los lados' },
-  px: { property: 'Padding Horizontal (Eje X)', axis: 'Izquierda y Derecha' },
-  py: { property: 'Padding Vertical (Eje Y)', axis: 'Arriba y Abajo' },
-  pt: { property: 'Padding Top (Relleno Superior)', axis: 'Borde Superior' },
-  pb: { property: 'Padding Bottom (Relleno Inferior)', axis: 'Borde Inferior' },
-  pl: { property: 'Padding Left (Relleno Izquierdo)', axis: 'Borde Izquierdo' },
-  pr: { property: 'Padding Right (Relleno Derecho)', axis: 'Borde Derecho' },
+  p: { property: 'Padding (Relleno Interior)', axis: 'Todos los lados', scale: VALUE_SCALES.spacingSize },
+  px: { property: 'Padding Horizontal (Eje X)', axis: 'Izquierda y Derecha', scale: VALUE_SCALES.spacingSize },
+  py: { property: 'Padding Vertical (Eje Y)', axis: 'Arriba y Abajo', scale: VALUE_SCALES.spacingSize },
+  pt: { property: 'Padding Top (Relleno Superior)', axis: 'Borde Superior', scale: VALUE_SCALES.spacingSize },
+  pb: { property: 'Padding Bottom (Relleno Inferior)', axis: 'Borde Inferior', scale: VALUE_SCALES.spacingSize },
+  pl: { property: 'Padding Left (Relleno Izquierdo)', axis: 'Borde Izquierdo', scale: VALUE_SCALES.spacingSize },
+  pr: { property: 'Padding Right (Relleno Derecho)', axis: 'Borde Derecho', scale: VALUE_SCALES.spacingSize },
 
-  // Distancia y Huecos
-  gap: { property: 'Gap (Separación)', axis: 'Entre filas y columnas' },
-  'gap-x': { property: 'Gap Horizontal', axis: 'Entre columnas' },
-  'gap-y': { property: 'Gap Vertical', axis: 'Entre filas' },
+  gap: { property: 'Gap (Separación)', axis: 'Entre filas y columnas', scale: VALUE_SCALES.spacingSize },
+  'gap-x': { property: 'Gap Horizontal', axis: 'Entre columnas', scale: VALUE_SCALES.spacingSize },
+  'gap-y': { property: 'Gap Vertical', axis: 'Entre filas', scale: VALUE_SCALES.spacingSize },
 
-  // Dimensiones
-  w: { property: 'Width (Ancho)', axis: 'Eje Horizontal' },
-  h: { property: 'Height (Alto)', axis: 'Eje Vertical' },
-  'max-w': { property: 'Max Width (Ancho Máximo)', axis: 'Límite Horizontal' },
+  w: { property: 'Width (Ancho)', axis: 'Eje Horizontal', scale: VALUE_SCALES.spacingSize },
+  h: { property: 'Height (Alto)', axis: 'Eje Vertical', scale: VALUE_SCALES.spacingSize },
+  'max-w': { property: 'Max Width (Ancho Máximo)', axis: 'Límite Horizontal', scale: VALUE_SCALES.maxWidthSize },
   'min-w': { property: 'Min Width (Ancho Mínimo)', axis: 'Límite Horizontal' },
   'max-h': { property: 'Max Height (Alto Máximo)', axis: 'Límite Vertical' },
   'min-h': { property: 'Min Height (Alto Mínimo)', axis: 'Límite Vertical' },
 
-  // Colores
   bg: { property: 'Background (Fondo)', axis: 'Superficie del contenedor' },
-  text: { property: 'Text (Texto / Tipografía)', axis: 'Estilo de letra' },
+  text: { property: 'Text (Texto / Tipografía)', axis: 'Estilo o Tamaño de letra' },
   border: { property: 'Border (Borde)', axis: 'Contorno exterior' },
   ring: { property: 'Ring (Anillo de Enfoque)', axis: 'Borde de selección' },
 
-  // Tipografía
   font: { property: 'Font (Fuente / Grosor)', axis: 'Peso o Familia tipográfica' },
   tracking: { property: 'Tracking (Espaciado de Letras)', axis: 'Distancia entre caracteres' },
   leading: { property: 'Leading (Interlineado)', axis: 'Distancia entre renglones' },
 
-  // Layout
   grid: { property: 'Grid (Rejilla)', axis: 'Distribución Bidimensional' },
   'grid-cols': { property: 'Grid Columns', axis: 'Columnas' },
   'col-span': { property: 'Column Span', axis: 'Espacio ocupado' },
@@ -66,9 +89,8 @@ const PREFIX_MAP = {
   items: { property: 'Align Items', axis: 'Alineación Secundaria (Vertical)' },
   justify: { property: 'Justify Content', axis: 'Alineación Principal (Horizontal)' },
 
-  // Esquinas y Sombras
-  rounded: { property: 'Border Radius (Redondeo)', axis: 'Esquinas' },
-  shadow: { property: 'Box Shadow (Sombra)', axis: 'Elevación visual' },
+  rounded: { property: 'Border Radius (Redondeo)', axis: 'Esquinas', scale: VALUE_SCALES.roundedSize },
+  shadow: { property: 'Box Shadow (Sombra)', axis: 'Elevación visual', scale: VALUE_SCALES.shadowSize },
   opacity: { property: 'Opacity (Opacidad)', axis: 'Nivel de transparencia' },
 };
 
@@ -106,10 +128,11 @@ export function parseTailwindClass(rawClassStr) {
     baseClass = parts.pop();
     variants = parts.map((v) => {
       const info = VARIANT_MAP[v];
+      const scaleInfo = getScaleString(VALUE_SCALES.screenSize, v);
       return {
         prefix: v,
         type: info ? info.type : 'Condición',
-        description: info ? info.description : `Condición activa bajo '${v}:'`,
+        description: `${info ? info.description : `Condición activa bajo '${v}:'`}${scaleInfo}`,
       };
     });
   }
@@ -145,7 +168,7 @@ export function parseTailwindClass(rawClassStr) {
     };
   }
 
-  // 3. Clases Compuestas (Ej: bg-slate-950, max-w-7xl, text-slate-100/80)
+  // 3. Clases Compuestas
   const segments = baseClass.split('-');
   
   if (segments.length === 1) {
@@ -163,7 +186,6 @@ export function parseTailwindClass(rawClassStr) {
   let prefix = segments[0];
   let restSegments = segments.slice(1);
 
-  // Prefijos de dos palabras (max-w, grid-cols, min-h, etc.)
   const twoWordPrefix = `${segments[0]}-${segments[1]}`;
   if (PREFIX_MAP[twoWordPrefix]) {
     prefix = twoWordPrefix;
@@ -175,7 +197,6 @@ export function parseTailwindClass(rawClassStr) {
     axis: 'General',
   };
 
-  // Manejar el Valor Completo (ej: slate-950, 7xl, emerald-950/60)
   let fullValue = restSegments.join('-');
   let opacityInfo = '';
 
@@ -185,7 +206,7 @@ export function parseTailwindClass(rawClassStr) {
     opacityInfo = ` (con ${opacity}% de opacidad)`;
   }
 
-  // Si son 2 o más sub-elementos en el valor (ej: "slate-950" -> color: Slate, tono: 950)
+  // Si es un color de 2 partes (ej: bg-slate-950)
   if (restSegments.length >= 2 && ['bg', 'text', 'border', 'ring'].includes(prefix)) {
     const colorName = restSegments[0];
     const colorShade = restSegments.slice(1).join('-');
@@ -201,13 +222,21 @@ export function parseTailwindClass(rawClassStr) {
     };
   }
 
+  // Detectar si la propiedad tiene una escala asignada (ej: text-4xl, max-w-7xl, p-8)
+  let scaleString = '';
+  if (prefix === 'text' && VALUE_SCALES.textSize.includes(fullValue)) {
+    scaleString = getScaleString(VALUE_SCALES.textSize, fullValue);
+  } else if (prefixInfo.scale) {
+    scaleString = getScaleString(prefixInfo.scale, fullValue);
+  }
+
   return {
     raw: rawClassStr,
     baseClass,
     variants,
     prefixMeaning: prefixInfo.property,
     axisMeaning: prefixInfo.axis,
-    valueMeaning: `${fullValue}${opacityInfo}`,
+    valueMeaning: `${fullValue}${opacityInfo}${scaleString}`,
     cssEquivalent: `Procesado dinámicamente por Tailwind CSS`,
   };
 }
