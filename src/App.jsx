@@ -1,11 +1,10 @@
-// src/App.jsx
 import { useState } from 'react';
 import Header from './components/header';
 import SyntaxInspector from './components/SyntaxInspector';
 import { TEMPLATES } from './data/templates';
 
 export default function App() {
-  // Estado para el código JSX (inicia con la primera plantilla por defecto)
+  // Estado para el código JSX (inicia con una plantilla por defecto)
   const [code, setCode] = useState(TEMPLATES[0].code);
   const [selectedClass, setSelectedClass] = useState(null);
   const [activeNodeIds, setActiveNodeIds] = useState([]);
@@ -19,7 +18,7 @@ export default function App() {
 
   return (
     <div className="h-screen flex flex-col bg-slate-900 text-slate-100 overflow-hidden">
-      {/* Header Limpio */}
+      {/* Header */}
       <Header
         showInspector={showInspector}
         setShowInspector={setShowInspector}
@@ -54,9 +53,9 @@ export default function App() {
           />
         </div>
 
-        {/* Panel Derecho: Vista Previa */}
+        {/* Panel Derecho: Previsualización */}
         <div className="flex flex-col bg-slate-800 border border-slate-700 rounded-xl p-3 overflow-hidden min-h-0">
-          <div className="font-mono text-[11px] text-slate-400 mb-2 shrink-0">Vista Previa</div>
+          <div className="font-mono text-[11px] text-slate-400 mb-2 shrink-0">Previsualización</div>
           <div className="flex-1 bg-slate-950 rounded-lg border border-slate-700/80 overflow-auto p-4">
             {/* Componente o Evaluador de Previsualización */}
           </div>
