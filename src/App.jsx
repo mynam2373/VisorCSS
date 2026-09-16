@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { parseJSXToHTML } from './utils/jsxParser';
 import SyntaxInspector from './comp/syntaxInspector';
+import { TemplateSelector } from './comp/templateSelector';
 
 export default function App() {
   const [code, setCode] = useState(
@@ -61,28 +62,33 @@ export default function App() {
     `);
     doc.close();
   }, [code, showInspector, activeNodeIds]);
-
-  return (
+return (
     <div className="h-screen flex flex-col bg-slate-900 text-slate-100 overflow-hidden">
       {/* Header Compacto */}
       <header className="border-b border-slate-800 px-4 py-2.5 flex justify-between items-center bg-slate-900 shrink-0">
         <h1 className="text-base font-bold text-blue-500">Tailwind & React Lab</h1>
-        <label className="flex items-center space-x-2 text-xs cursor-pointer">
-          <input
-            type="checkbox"
-            checked={showInspector}
-            onChange={(e) => setShowInspector(e.target.checked)}
-            className="rounded bg-slate-800 border-slate-700 text-blue-600 focus:ring-0"
-          />
-          <span>Modo Inspección (Todos los bordes)</span>
-        </label>
+        
+        {/* Grupo de Controles a la Derecha */}
+        <div className="flex items-center gap-4">
+          <label className="flex items-center space-x-2 text-xs cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={showInspector}
+              onChange={(e) => setShowInspector(e.target.checked)}
+              className="rounded bg-slate-800 border-slate-700 text-blue-600 focus:ring-0 cursor-pointer"
+            />
+            <span>Modo Inspección (Todos los bordes)</span>
+          </label>
+
+          {/* Selector de Plantillas */}
+          <TemplateSelector onSelectTemplate={(templateCode) => setCode(templateCode)} />
+        </div>
       </header>
 
       <main className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3 p-3 overflow-hidden min-h-0">
         {/* Panel Izquierdo: Editor Apretado + Espacio Máximo para la Lista */}
         <div className="flex flex-col bg-slate-800 border border-slate-700 rounded-xl p-3 overflow-hidden space-y-2 min-h-0">
           <div className="font-mono text-[11px] text-slate-400 shrink-0">Editor JSX / React</div>
-          
           <textarea
             value={code}
             onChange={(e) => setCode(e.target.value)}
