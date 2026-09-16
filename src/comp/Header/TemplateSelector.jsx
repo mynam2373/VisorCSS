@@ -1,6 +1,6 @@
 // src/components/TemplateSelector.jsx
 import React, { useState, useRef, useEffect } from 'react';
-import { TEMPLATES } from '../data/templates';
+import { TEMPLATES } from '../../data/Templates';
 
 export function TemplateSelector({ onSelectTemplate }) {
   const [isOpen, setIsOpen] = useState(false);

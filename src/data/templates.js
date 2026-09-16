@@ -1,5 +1,3 @@
-// src/data/templates.js
-
 export const TEMPLATES = [
   {
     id: 'primavera-flores',

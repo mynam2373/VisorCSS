@@ -1,5 +1,3 @@
-// src/utils/classParser.js
-
 // 1. Escalas estándar de Tailwind
 const VALUE_SCALES = {
   textSize: ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'],
