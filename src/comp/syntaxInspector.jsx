@@ -80,45 +80,62 @@ export default function SyntaxInspector({
         </div>
       </div>
 
-      {/* 2. Anatomía de Clase (Compacta para no robar espacio) */}
-      <div className="p-2.5 bg-slate-900 border border-slate-700/80 rounded-lg space-y-1.5 text-slate-200 shrink-0">
-        <div className="flex justify-between items-center border-b border-slate-800 pb-1">
-          <span className="text-xs font-bold text-blue-400 font-mono">
-            {selectedClass || 'Ninguna clase seleccionada'}
-          </span>
-          <span className="text-[9px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">
-            Anatomía de Clase
-          </span>
-        </div>
+{/* 2. Anatomía de Clase */}
+<div className="p-2.5 bg-slate-900 border border-slate-700/80 rounded-lg space-y-2 text-slate-200 shrink-0">
+  <div className="flex justify-between items-center border-b border-slate-800 pb-1">
+    <span className="text-xs font-bold text-blue-400 font-mono">
+      {selectedClass || 'Ninguna clase seleccionada'}
+    </span>
+    <span className="text-[9px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">
+      Anatomía de Clase
+    </span>
+  </div>
 
-        {info ? (
-          <div className="space-y-1 text-[11px]">
-            <p>
-              <span className="text-blue-400 font-bold">└─► PROPIEDAD:</span>{' '}
-              {info.prefixMeaning}
-            </p>
-            {info.axisMeaning && (
-              <p>
-                <span className="text-emerald-400 font-bold">└─► EJE:</span>{' '}
-                {info.axisMeaning}
-              </p>
-            )}
-            {info.valueMeaning && (
-              <p>
-                <span className="text-amber-400 font-bold">└─► VALOR:</span>{' '}
-                {info.valueMeaning}
-              </p>
-            )}
-            <div className="pt-0.5 text-[10px] text-slate-400">
-              <span className="text-slate-500">CSS:</span> {info.cssEquivalent}
+  {info ? (
+    <div className="space-y-1 text-[11px]">
+      {/* Muestra las Variantes/Breakpoints si existen */}
+      {info.variants && info.variants.length > 0 && (
+        <div className="bg-slate-950/80 p-1.5 rounded border border-slate-800 mb-1 space-y-1">
+          <span className="text-[10px] text-purple-400 font-bold block">
+            CONDICIÓN / VARIANTE DETECTADA:
+          </span>
+          {info.variants.map((v, idx) => (
+            <div key={idx} className="flex items-center gap-1.5 text-[10px]">
+              <span className="px-1.5 py-0.2 bg-purple-950 text-purple-300 border border-purple-500/40 rounded font-bold font-mono">
+                {v.prefix}:
+              </span>
+              <span className="text-slate-300">{v.description}</span>
             </div>
-          </div>
-        ) : (
-          <p className="text-[10px] text-slate-500 italic">
-            Selecciona una clase arriba para analizar su estructura.
-          </p>
-        )}
+          ))}
+        </div>
+      )}
+
+      <p>
+        <span className="text-blue-400 font-bold">└─► PROPIEDAD:</span>{' '}
+        {info.prefixMeaning}
+      </p>
+      {info.axisMeaning && (
+        <p>
+          <span className="text-emerald-400 font-bold">└─► EJE / ÁMBITO:</span>{' '}
+          {info.axisMeaning}
+        </p>
+      )}
+      {info.valueMeaning && (
+        <p>
+          <span className="text-amber-400 font-bold">└─► VALOR:</span>{' '}
+          {info.valueMeaning}
+        </p>
+      )}
+      <div className="pt-0.5 text-[10px] text-slate-400">
+        <span className="text-slate-500">CSS:</span> {info.cssEquivalent}
       </div>
+    </div>
+  ) : (
+    <p className="text-[10px] text-slate-500 italic">
+      Selecciona una clase arriba para analizar su estructura.
+    </p>
+  )}
+</div>
     </div>
   );
 }
