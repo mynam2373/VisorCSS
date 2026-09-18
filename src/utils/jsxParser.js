@@ -1,5 +1,3 @@
-// src/utils/jsxParser.js
-
 export const BORDER_COLORS = [
   '#3b82f6', // blue-500
   '#10b981', // emerald-500

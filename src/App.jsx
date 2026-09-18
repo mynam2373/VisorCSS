@@ -40,7 +40,7 @@ export default function App() {
           showInspector={showInspector}
         />
 
-      <PreviewPanel code={code} />
+      <PreviewPanel code={code} showInspector={showInspector} activeNodeIds={activeNodeIds} />
       </main>
     </div>
   );

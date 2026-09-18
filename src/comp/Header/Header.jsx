@@ -1,5 +1,5 @@
 import React from 'react';
-import { TemplateSelector } from './templateSelector';
+import { TemplateSelector } from './TemplateSelector';
 
 export default function Header({ showInspector, setShowInspector, onSelectTemplate }) {
   return (

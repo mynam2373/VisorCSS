@@ -1,7 +1,12 @@
 // src/comp/editor/PreviewPanel.jsx
 import { useState } from 'react';
+import { extractNodesFromJSX } from '../../utils/jsxParser';
 
-export default function PreviewPanel({ code = '' }) {
+export default function PreviewPanel({ 
+  code = '', 
+  showInspector = true, 
+  activeNodeIds = [] 
+}) {
   const [device, setDevice] = useState('desktop');
   const [zoom, setZoom] = useState(40);
 
@@ -14,9 +19,37 @@ export default function PreviewPanel({ code = '' }) {
   const activeDim = dimensions[device];
 
   const buildSrcDoc = (jsxCode) => {
+    // Extraemos los nodos con sus colores desde el parser
+    const nodes = extractNodesFromJSX(jsxCode);
+
+    // Creamos las reglas CSS para los bordes
+    const dynamicStyles = nodes
+      .map((node) => {
+        const isVisible = showInspector || activeNodeIds.includes(node.id);
+        if (!isVisible) return '';
+
+        return `
+          [data-node-id="${node.id}"] {
+            outline: 2px dashed ${node.color} !important;
+            outline-offset: -2px !important;
+          }
+        `;
+      })
+      .join('\n');
+
+    // Inyectamos el identificador data-node-id en cada etiqueta
+    let elementIndex = 0;
     const cleanHtml = jsxCode
       .replace(/className=/g, 'class=')
-      .replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+      .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
+      .replace(/<([a-z0-9]+)([^>]*)/gi, (match, p1, p2) => {
+        if (['br', 'hr', 'img', 'input'].includes(p1.toLowerCase()) && match.endsWith('/>')) {
+          return match;
+        }
+        const nodeId = nodes[elementIndex]?.id || `node-${elementIndex}`;
+        elementIndex++;
+        return `<${p1} data-node-id="${nodeId}"${p2}`;
+      });
 
     return `
       <!DOCTYPE html>
@@ -26,7 +59,6 @@ export default function PreviewPanel({ code = '' }) {
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <script src="https://cdn.tailwindcss.com"></script>
           <style>
-            /* Habilitar el scroll vertical interno dentro del iframe */
             html, body { 
               margin: 0; 
               padding: 0; 
@@ -37,6 +69,7 @@ export default function PreviewPanel({ code = '' }) {
               background-color: #020617; 
               color: #f8fafc; 
             }
+            ${dynamicStyles}
           </style>
         </head>
         <body>
@@ -106,9 +139,8 @@ export default function PreviewPanel({ code = '' }) {
             </div>
           </div>
 
-          {/* Iframe con Scroll Habilitado */}
+          {/* Iframe */}
           <div className="flex-1 relative bg-slate-950 overflow-hidden">
-            {/* Permite interactuar con el scroll mediante la rueda del mouse */}
             <div className="absolute inset-0 z-10 pointer-events-none" />
             <iframe
               srcDoc={buildSrcDoc(code)}

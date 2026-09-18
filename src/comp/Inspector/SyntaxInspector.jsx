@@ -1,5 +1,3 @@
-// src/components/SyntaxInspector.jsx
-import { useState } from 'react';
 import { parseTailwindClass } from '../../utils/classParser';
 import { extractNodesFromJSX } from '../../utils/jsxParser';
 
