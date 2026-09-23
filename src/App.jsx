@@ -10,6 +10,9 @@ export default function App() {
   const [selectedClass, setSelectedClass] = useState(null);
   const [showInspector, setShowInspector] = useState(true);
 
+  // Estado para controlar la apertura del modal de GitHub
+  const [isGithubModalOpen, setIsGithubModalOpen] = useState(false);
+
   return (
     <div className="h-screen flex flex-col bg-slate-900 text-slate-100 overflow-hidden">
       <Header
@@ -21,6 +24,7 @@ export default function App() {
           setCode(templateCode);
           setSelectedClass(null);
         }}
+        onOpenGithubModal={() => setIsGithubModalOpen(true)}
       />
 
       <main className="flex-1 overflow-hidden min-h-0 p-3">
@@ -36,6 +40,8 @@ export default function App() {
             setShowInspector={setShowInspector}
             selectedClass={selectedClass}
             setSelectedClass={setSelectedClass}
+            isGithubModalOpen={isGithubModalOpen}
+            setIsGithubModalOpen={setIsGithubModalOpen}
           />
         )}
       </main>
