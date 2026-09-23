@@ -1,7 +1,7 @@
 // src/hooks/useProjectTree.js
 import { useState, useEffect } from 'react';
 import { defaultTemplateFileSystem, emptyProjectFileSystem } from '../data/Templates';
-import { fetchFileContent } from '../services/githubService'; // Importamos el servicio
+import { fetchFileContent } from '../services/githubServices'; // Importamos el servicio
 
 const INITIAL_PROJECT_INSTANCES = [
   {
