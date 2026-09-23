@@ -1,7 +1,7 @@
 // src/comp/github/GithubImportModal.jsx
 import React, { useState } from 'react';
 import { Github, X, Loader2, AlertCircle } from 'lucide-react';
-import { fetchGithubRepository } from '../../services/githubService';
+import { fetchGithubRepository } from '../../services/githubServices';
 
 export default function GithubImportModal({ isOpen, onClose, onImportSuccess }) {
   const [repoUrl, setRepoUrl] = useState('');
