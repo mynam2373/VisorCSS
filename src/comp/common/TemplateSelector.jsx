@@ -63,3 +63,4 @@ export function TemplateSelector({ onSelectTemplate }) {
     </div>
   );
 }
+export default TemplateSelector;

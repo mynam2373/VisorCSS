@@ -1,4 +1,3 @@
-import React from 'react';
 import SyntaxInspector from '../Inspector/SyntaxInspector';
 
 export default function CodeEditor({
@@ -19,7 +18,7 @@ export default function CodeEditor({
       <textarea
         value={code}
         onChange={(e) => setCode(e.target.value)}
-        className="w-full h-44 bg-slate-950 text-slate-200 font-mono text-xs p-3 rounded-lg border border-slate-700/80 focus:outline-none focus:border-blue-500 resize-none shrink-0"
+        className="w-full h-96 bg-slate-950 text-slate-200 font-mono text-xs p-3 rounded-lg border border-slate-700/80 focus:outline-none focus:border-blue-500 resize-y shrink-0"
         placeholder="Pegá tu código JSX aquí..."
       />
 

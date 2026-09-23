@@ -1,25 +1,20 @@
+// src/App.jsx
 import { useState } from 'react';
-import Header from './comp/Header/Header';
-import CodeEditor from './comp/editor_temp/CodeEditor';
-import PreviewPanel from './comp/editor_temp/PreviewPanel';
-import { TEMPLATES } from './data/Templates';
+import Header from './comp/common/Header';
+import Dashboard from './views/dashboard';
+import CssReaderView from './views/CssReaderView';
 
 export default function App() {
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [code, setCode] = useState('');
   const [selectedClass, setSelectedClass] = useState(null);
-  const [activeNodeIds, setActiveNodeIds] = useState([]);
-  const [showInspector, setShowInspector] = useState(false);
-
-  const handleToggleNode = (id) => {
-    setActiveNodeIds((prev) =>
-      prev.includes(id) ? prev.filter((nodeId) => nodeId !== id) : [...prev, id]
-    );
-  };
+  const [showInspector, setShowInspector] = useState(true);
 
   return (
     <div className="h-screen flex flex-col bg-slate-900 text-slate-100 overflow-hidden">
-      {/* Navbar Superior */}
       <Header
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
         showInspector={showInspector}
         setShowInspector={setShowInspector}
         onSelectTemplate={(templateCode) => {
@@ -28,19 +23,21 @@ export default function App() {
         }}
       />
 
-      {/* Cuerpo Principal */}
-      <main className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-3 p-3 overflow-hidden min-h-0">
-        <CodeEditor
-          code={code}
-          setCode={setCode}
-          selectedClass={selectedClass}
-          onSelectClass={setSelectedClass}
-          activeNodeIds={activeNodeIds}
-          onToggleNode={handleToggleNode}
-          showInspector={showInspector}
-        />
+      <main className="flex-1 overflow-hidden min-h-0 p-3">
+        {activeTab === 'dashboard' && (
+          <Dashboard onNavigate={setActiveTab} />
+        )}
 
-      <PreviewPanel code={code} showInspector={showInspector} activeNodeIds={activeNodeIds} />
+        {activeTab === 'inspector' && (
+          <CssReaderView
+            code={code}
+            setCode={setCode}
+            showInspector={showInspector}
+            setShowInspector={setShowInspector}
+            selectedClass={selectedClass}
+            setSelectedClass={setSelectedClass}
+          />
+        )}
       </main>
     </div>
   );

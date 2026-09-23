@@ -1,3 +1,5 @@
+// src/data/templates.js
+
 export const TEMPLATES = [
   {
     id: 'primavera-flores',
@@ -92,5 +94,115 @@ export const TEMPLATES = [
     </div>
   </div>
 </section>`,
+  },
+];
+
+// Árbol de carpetas y archivos creado dinámicamente desde el template de Primavera
+export const defaultTemplateFileSystem = [
+  {
+    id: 'src',
+    name: 'src',
+    type: 'folder',
+    depth: 0,
+    isOpen: true,
+    isProtected: true,
+    children: [
+      {
+        id: 'components',
+        name: 'components',
+        type: 'folder',
+        depth: 1,
+        isOpen: true,
+        children: [
+          {
+            id: 'HeroHeader.jsx',
+            name: 'HeroHeader.jsx',
+            type: 'file',
+            depth: 2,
+            content: `{/* Encabezado Principal */}
+<div className="max-w-7xl mx-auto mb-16 text-center space-y-4">
+  <span className="text-emerald-400 text-xs font-semibold tracking-[0.3em] uppercase bg-emerald-950/60 px-4 py-1.5 rounded-full border border-emerald-500/30">
+    Colección de Temporada 2026
+  </span>
+  <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-rose-100">
+    El Renacer de la <span className="text-rose-400 underline decoration-pink-500/50 underline-offset-8">Primavera</span>
+  </h1>
+  <p className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base font-light leading-relaxed">
+    Explora la frescura de nuestra selección botánica artesanal. Arreglos vivos, paletas vibrantes y aromas diseñados para transformar cualquier espacio.
+  </p>
+</div>`,
+          },
+          {
+            id: 'ProductCard.jsx',
+            name: 'ProductCard.jsx',
+            type: 'file',
+            depth: 2,
+            content: `{/* Tarjeta de Producto */}
+<div className="bg-slate-900 p-6 rounded-2xl border border-amber-500/20 flex flex-col justify-between space-y-6">
+  <div className="space-y-3">
+    <div className="w-10 h-10 bg-amber-500/10 rounded-lg border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold">
+      🌻
+    </div>
+    <h3 className="text-lg font-bold text-slate-100">Girasoles & Mimosas</h3>
+    <p className="text-slate-400 text-xs leading-relaxed">
+      Energía pura en tonos amarillos cálidos. Ideal para iluminar escritorios y espacios de trabajo.
+    </p>
+  </div>
+  <div className="border-t border-slate-800 pt-4 flex items-center justify-between">
+    <span className="text-lg font-bold text-amber-400">$18.200</span>
+    <button className="bg-slate-800 hover:bg-amber-500/20 text-amber-300 text-xs px-3 py-1.5 rounded border border-amber-500/30 transition-colors">
+      Ver Detalle
+    </button>
+  </div>
+</div>`,
+          },
+        ],
+      },
+      {
+        id: 'styles',
+        name: 'styles',
+        type: 'folder',
+        depth: 1,
+        isOpen: false,
+        children: [
+          {
+            id: 'theme.css',
+            name: 'theme.css',
+            type: 'file',
+            depth: 2,
+            content: `/* Paleta de colores de la plantilla Primavera */\n:root {\n  --primary-rose: #fb7185;\n  --bg-dark: #020617;\n}`,
+          },
+        ],
+      },
+      {
+        id: 'App.jsx',
+        name: 'App.jsx',
+        type: 'file',
+        depth: 1,
+        isProtected: true,
+        content: TEMPLATES[0].code,
+      },
+    ],
+  },
+];
+
+export const emptyProjectFileSystem = [
+  {
+    id: 'src',
+    name: 'src',
+    type: 'folder',
+    depth: 0,
+    isOpen: true,
+    isProtected: true,
+    children: [
+      {
+        id: 'App.jsx',
+        name: 'App.jsx',
+        type: 'file',
+        depth: 1,
+        isProtected: true,
+        content: `// Proyecto Limpio\nexport default function App() {\n  return <div className="p-8 text-slate-200">Comienza a escribir código aquí...</div>;\n}`,
+      },
+    ],
   },
 ];
