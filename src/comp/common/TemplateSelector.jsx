@@ -1,5 +1,5 @@
 // src/components/TemplateSelector.jsx
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { TEMPLATES } from '../../data/Templates';
 
 export function TemplateSelector({ onSelectTemplate }) {
