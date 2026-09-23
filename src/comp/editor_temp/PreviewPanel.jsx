@@ -1,6 +1,6 @@
 // src/comp/editor/PreviewPanel.jsx
 import { useState } from 'react';
-import { extractNodesFromJSX } from '../../utils/jsxParser';
+import { extractNodesFromJSX } from '../../utils/jasxparser';
 
 export default function PreviewPanel({ 
   code = '', 

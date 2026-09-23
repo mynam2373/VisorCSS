@@ -1,5 +1,5 @@
 import { parseTailwindClass } from '../../utils/classParser';
-import { extractNodesFromJSX } from '../../utils/jsxParser';
+import { extractNodesFromJSX } from '../../utils/jasxparser';
 
 export default function SyntaxInspector({
   code,
