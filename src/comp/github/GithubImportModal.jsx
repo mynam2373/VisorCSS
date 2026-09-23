@@ -1,6 +1,6 @@
 // src/comp/github/GithubImportModal.jsx
-import React, { useState } from 'react';
-import { Github, X, Loader2, AlertCircle } from 'lucide-react';
+import { useState } from 'react';
+import { X, Loader2, AlertCircle, GitBranch } from 'lucide-react';
 import { fetchGithubRepository } from '../../services/githubServices';
 
 export default function GithubImportModal({ isOpen, onClose, onImportSuccess }) {
@@ -32,7 +32,6 @@ export default function GithubImportModal({ isOpen, onClose, onImportSuccess }) 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-[#0b101b] border border-slate-700/80 w-full max-w-md rounded-2xl shadow-2xl p-6 select-none relative">
-        {/* Botón cerrar */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
@@ -40,10 +39,9 @@ export default function GithubImportModal({ isOpen, onClose, onImportSuccess }) 
           <X className="w-4 h-4" />
         </button>
 
-        {/* Encabezado */}
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2.5 bg-slate-800/80 rounded-xl border border-slate-700 text-white">
-            <Github className="w-6 h-6" />
+            <GitBranch className="w-6 h-6 text-blue-400" />
           </div>
           <div>
             <h3 className="text-base font-semibold text-slate-100">
@@ -55,7 +53,6 @@ export default function GithubImportModal({ isOpen, onClose, onImportSuccess }) 
           </div>
         </div>
 
-        {/* Formulario */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-xs font-medium text-slate-300 mb-1.5">
