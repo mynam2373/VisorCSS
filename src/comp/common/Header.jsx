@@ -1,5 +1,5 @@
 // src/components/common/Header.jsx
-import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Github } from 'lucide-react';
 import TemplateSelector from './TemplateSelector';
 
 export default function Header({
@@ -8,6 +8,7 @@ export default function Header({
   showInspector,
   setShowInspector,
   onSelectTemplate,
+  onOpenGithubModal,
 }) {
   return (
     <header className="bg-slate-950 border-b border-slate-800 px-4 py-2.5 flex items-center justify-between shrink-0 h-14">
@@ -41,6 +42,16 @@ export default function Header({
       {/* Lado Derecho: Herramientas exclusivas del Lector CSS */}
       {activeTab === 'inspector' && (
         <div className="flex items-center gap-3">
+          {/* Botón para Clonar Repositorio de GitHub */}
+          <button
+            onClick={onOpenGithubModal}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white transition-all cursor-pointer shadow-sm active:scale-95"
+            title="Importar un repositorio público de GitHub"
+          >
+            <Github className="w-3.5 h-3.5 text-slate-400" />
+            <span>Clonar GitHub</span>
+          </button>
+
           <TemplateSelector onSelectTemplate={onSelectTemplate} />
 
           <button
